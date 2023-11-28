@@ -1,3 +1,5 @@
+import 'package:api_testing/modal/bossend_categories.dart';
+import 'package:api_testing/ui/bosssend_categories.dart';
 import 'package:api_testing/ui/home.dart';
 import 'package:api_testing/widget/bd_wash_product_list.dart';
 import 'package:api_testing/widget/product_card.dart';
@@ -20,7 +22,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:  BdWashProductList(),
+      home:  bsCategoriesUi(),
     );
   }
 }
