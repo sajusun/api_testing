@@ -32,7 +32,7 @@ class _ProductCardState extends State<ProductCard> {
       body: isNotError(),
     );
   }
-  // check api data is succesfully fetch or display a circular bar
+  // check api data is successfully fetch or display a circular bar
   isNotError(){
     if(datum.isNotEmpty){
       return Padding(
@@ -52,8 +52,9 @@ class _ProductCardState extends State<ProductCard> {
                       children: [
                         image.Image.network(
                           datum[item].image.medium,
-                          height: 230,
-                          fit: BoxFit.cover,
+                          height: 180,
+                          width: 300,
+                          fit: BoxFit.fitWidth,
                         ),
                         Text(datum[item].name,
                             style: TextStyle(color: Colors.black,fontSize: 16, height: 3)),
@@ -70,6 +71,8 @@ class _ProductCardState extends State<ProductCard> {
                           "Discount : ${datum[item].discount}",
                           style: TextStyle(height: 3),
                         ),
+                        ElevatedButton(onPressed: (){},
+                            child: Text("Buy Now"))
                       ],
                     ),
                   ),
