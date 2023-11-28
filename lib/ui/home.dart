@@ -1,9 +1,11 @@
+import 'package:api_testing/widget/bd_wash_product_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/image.dart' as image;
 import 'package:gap/gap.dart';
 import '../modal/all_products.dart';
 import '../repository/all_products_api.dart';
+import 'bosssend_categories.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -13,26 +15,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  List<Datum> apiData = [];
-
-  getdata() async {
-    // data = await AllProductsApi.getFromApi();
-    var apiDatas = await AllProductsApi.getFromApi();
-    if (apiDatas != null) {
-      apiData.addAll(apiDatas.data.data);
-      setState(() {});
-    }
-    print(apiData[0].id);
-
-  }
-
-  @override
-  void initState() {
-    getdata();
-    // TODO: implement initState
-    super.initState();
-    //getdata();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,51 +24,20 @@ class _HomeState extends State<Home> {
         centerTitle: true,
       ),
       body: Center(
-        child: errorHandle(),
+        child: Column(
+          children: [
+            OutlinedButton(onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>BdWashProductList()));
+            }, child: Text("BdWash Product List")),
+            OutlinedButton(onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (context)=>bsCategoriesUi()));
+
+            }, child: Text("Bosssend Product Categories")),
+
+          ],
+        ),
       ),
     );
   }
 
-  errorHandle() {
-    if (apiData.isNotEmpty) {
-      return ListView.builder(
-          itemCount: apiData.length,
-          itemBuilder: (context, index) {
-            return Card(
-              margin: EdgeInsets.all(15),
-              child: Column(
-                children: [
-                  Container(
-                    width: MediaQuery.sizeOf(context).width,
-                    height: 200,
-                    child: image.Image.network(
-                      apiData[index].image.medium,
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                  const Gap(20),
-                  Container(
-                    child: Text(
-                      apiData[index].name,
-                      style: TextStyle(fontSize: 16, color: Colors.black),
-                    ),
-                  ),
-                  Container(
-                    child: Row(
-                      children: [
-                        Text(apiData[index]
-                            .formattedFinalProductPrice
-                            .toString()),
-                        Text(apiData[index].discountedPrice.toString()),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            );
-          });
-    } else {
-      return CircularProgressIndicator();
-    }
-  }
 }

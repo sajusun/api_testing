@@ -11,10 +11,11 @@ class BdWashProductList extends StatefulWidget {
   State<BdWashProductList> createState() => _BdWashProductListState();
 }
 
-class _BdWashProductListState extends State<BdWashProductList> {
+class _BdWashProductListState extends State<BdWashProductList> with TickerProviderStateMixin {
   List<bdWash.Datum> datum = [];
   List<Widget> tabBar=[];
   List<Widget> tabBarData=[];
+  late TabController tabController;
 
 int index=0;
 
@@ -23,6 +24,7 @@ int index=0;
     print(data.data);
     datum.addAll(data.data);
     dynamicTabBar();
+    tabController =TabController(length: datum.length, vsync: this);
     setState(() {});
   }
 
@@ -60,36 +62,34 @@ int index=0;
 
   tabBarErr(){
     if(tabBar.isNotEmpty ){
-      return DefaultTabController(
-        length: datum.length,
-        child: Scaffold(
-            bottomSheet:  TabBar(onTap: (value){
-              print(value);
-             // productOntab(value);
-              index=value;
-              setState(() {
-              });
-            },
-                tabs: tabBar),
-            body: SizedBox(
-              height: 200,
-              width: 300,
-              child: Padding(
-                padding: const EdgeInsets.only(top: 48.0),
-                child: Center(child: TabBarView(children: [
-                  Container(
-                    child: Column(
-                      children: [
-                        for(var item in datum[index].products)
-                          Text(item.name)
-                      ],
-                    ),
+      return Scaffold(
+        appBar: AppBar(title: Text("BdWash"),
+          bottom: TabBar(
+              controller: tabController,
+              onTap: (value){
+          index=value;
+          setState(() {
+          });
+        }, tabs: datum.map((data) => Tab(text: data.name,)).toList()
+          ),
+          ),
 
-                  )
-                ])),
+          body: SizedBox(
+            height: 200,
+            width: 300,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 48.0),
+              child: Center(child: TabBarView(
+                  controller: tabController,
+                  children: datum.map((data) => Container(child:
+                Column(
+                  children: data.products.map((e) => Text(e.name)).toList()
+                )
+                ,)).toList()
               ),
-            )
-        ),
+              ),
+            ),
+          )
       );
     }else{
       return CircularProgressIndicator();
