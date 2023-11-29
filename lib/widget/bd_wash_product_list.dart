@@ -1,4 +1,3 @@
-import 'package:api_testing/modal/all_products.dart';
 import 'package:api_testing/modal/bdwash_service.dart' as bdWash;
 import 'package:api_testing/repository/all_products_api.dart';
 import 'package:flutter/material.dart';
@@ -57,42 +56,47 @@ int index=0;
 
   @override
   Widget build(BuildContext context) {
-    return tabBarErr();
+    return Scaffold(
+      appBar: AppBar(title: Text("BdWash"),
+      ),
+      body: tabBarErr(),
+    );
   }
 
   tabBarErr(){
     if(tabBar.isNotEmpty ){
-      return Scaffold(
-        appBar: AppBar(title: Text("BdWash"),
-          bottom: TabBar(
+      return Column(
+        children: [
+          TabBar(
               controller: tabController,
               onTap: (value){
-          index=value;
-          setState(() {
-          });
-        }, tabs: datum.map((data) => Tab(text: data.name,)).toList()
-          ),
+                index=value;
+                setState(() {
+                });
+              }, tabs: datum.map((data) => Tab(text: data.name,)).toList()
           ),
 
-          body: SizedBox(
-            height: 200,
-            width: 300,
-            child: Padding(
-              padding: const EdgeInsets.only(top: 48.0),
-              child: Center(child: TabBarView(
-                  controller: tabController,
-                  children: datum.map((data) => Container(child:
-                Column(
-                  children: data.products.map((e) => Text(e.name)).toList()
-                )
-                ,)).toList()
+          SizedBox(
+                height: 200,
+                width: 300,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 48.0),
+                  child: Center(child: TabBarView(
+                      controller: tabController,
+                      children: datum.map((data) => Container(child:
+                    Column(
+                      children: data.products.map((e) => Text(e.name)).toList()
+                    )
+                    ,)).toList()
+                  ),
+                  ),
+                ),
               ),
-              ),
-            ),
-          )
+        ],
       );
+
     }else{
-      return CircularProgressIndicator();
+      return Center(child: CircularProgressIndicator());
     }
   }
   // check api data is successfully fetch or display a circular bar
